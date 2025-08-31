@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-backend
+  labels:
+    app: weather-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather-backend
+  template:
+    metadata:
+      labels:
+        app: weather-backend
+    spec:
+      containers:
+      - name: weather-backend
+        image: weather-backend:1.0
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        env:
+        - name: OPENWEATHER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openweather-secret
+              key: apiKey
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
