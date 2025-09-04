@@ -7,7 +7,7 @@ function App() {
     const [error, setError] = useState('')
 
     // API 베이스 URL 설정 (환경변수 또는 기본값)
-    const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:30083'
+    const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:30082'
 
     const fetchWeather = async () => {
         if (!city.trim()) {
